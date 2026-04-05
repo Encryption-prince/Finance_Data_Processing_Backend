@@ -3,6 +3,7 @@ package com.assignment.fdp.repository;
 import com.assignment.fdp.model.FinancialRecord;
 import com.assignment.fdp.model.RecordType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -10,7 +11,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface FinancialRecordRepository extends JpaRepository<FinancialRecord, Long> {
+public interface FinancialRecordRepository extends JpaRepository<FinancialRecord, Long>, JpaSpecificationExecutor<FinancialRecord> {
     @Query("SELECT SUM(r.amount) FROM FinancialRecord r WHERE r.type = :type")
     BigDecimal sumByType(@Param("type") RecordType type);
 

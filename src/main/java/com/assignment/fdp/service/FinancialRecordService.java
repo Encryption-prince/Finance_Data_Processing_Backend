@@ -5,6 +5,7 @@ import com.assignment.fdp.dto.RecordRequest;
 import com.assignment.fdp.model.FinancialRecord;
 import com.assignment.fdp.model.RecordType;
 import com.assignment.fdp.repository.FinancialRecordRepository;
+import com.assignment.fdp.repository.FinancialRecordSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -62,6 +63,10 @@ public class FinancialRecordService {
 
     public List<FinancialRecord> searchRecords(String keyword) {
         return repository.searchRecords(keyword);
+    }
+
+    public List<FinancialRecord> filterRecords(String category, RecordType type, LocalDate startDate, LocalDate endDate) {
+        return repository.findAll(FinancialRecordSpecification.filter(category, type, startDate, endDate));
     }
 
 

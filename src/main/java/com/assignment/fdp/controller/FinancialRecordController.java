@@ -2,6 +2,7 @@ package com.assignment.fdp.controller;
 
 import com.assignment.fdp.dto.RecordRequest;
 import com.assignment.fdp.model.FinancialRecord;
+import com.assignment.fdp.model.RecordType;
 import com.assignment.fdp.service.FinancialRecordService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -61,5 +63,16 @@ public class FinancialRecordController {
     @PreAuthorize("hasAnyRole('ANALYST', 'ADMIN')")
     public ResponseEntity<List<FinancialRecord>> searchRecords(@RequestParam String keyword) {
         return ResponseEntity.ok(service.searchRecords(keyword));
+    }
+
+    //Filter by category, type and/or date range for Analyst and Admin only
+    @GetMapping("/filter")
+    @PreAuthorize("hasAnyRole('ANALYST', 'ADMIN')")
+    public ResponseEntity<List<FinancialRecord>> filterRecords(
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) RecordType type,
+            @RequestParam(required = false) LocalDate startDate,
+            @RequestParam(required = false) LocalDate endDate) {
+        return ResponseEntity.ok(service.filterRecords(category, type, startDate, endDate));
     }
 }
